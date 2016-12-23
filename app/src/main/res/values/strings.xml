@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">PayZoop</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="get_products_list_error">Products list is unavailable</string>
+    <string name="get_product_error">Product is unavailable</string>
+    <string name="facebook_app_id">1091266490957213</string>
+    <string name="title_activity_cart">CartActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="scan">Scan</string>
+    <string name="hello_world">Welcome to Android bar Code Scanner By Deepak Verma. </string>
+    <string name="blog_url">http://blog.whomeninja.in/android-barcode-scanner/</string>
+</resources>
