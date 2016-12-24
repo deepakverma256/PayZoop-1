@@ -26,6 +26,16 @@ public class ProductModel {
     String skuCode;
     String priceId;
     double salePrice;
+    int quantity = 1;
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
 
     public String getBarcodeId() {
         return barcodeId;
@@ -97,5 +107,18 @@ public class ProductModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        boolean matchFound = false;
+
+        if (object != null && object instanceof ProductModel)
+        {
+            matchFound = this.id == ((ProductModel) object).id;
+        }
+
+        return matchFound;
     }
 }

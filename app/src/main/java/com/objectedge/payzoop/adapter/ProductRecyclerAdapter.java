@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import com.objectedge.payzoop.OCCApplication;
 import com.objectedge.payzoop.R;
+import com.objectedge.payzoop.customView.ElegantNumberButton;
 import com.objectedge.payzoop.event.ListingPageClickEvent;
+import com.objectedge.payzoop.model.Cart;
 import com.objectedge.payzoop.model.ProductModel;
 import com.squareup.picasso.Picasso;
 
@@ -33,12 +35,16 @@ import de.greenrobot.event.EventBus;
  * Created by sachin.yadav on 02-08-2016.Test comment
  */
 public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecyclerAdapter.Holder>{
+    private static final String TAG = ProductRecyclerAdapter.class.getSimpleName();
 
     @Inject
     LayoutInflater mInflater;
 
     @Inject
     EventBus mEventBus;
+
+    @Inject
+    Cart cart;
 
     public List<ProductModel> getProducts() {
         return mProducts;
@@ -95,11 +101,23 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
     }
 
     @Override
-    public void onBindViewHolder(ProductRecyclerAdapter.Holder holder, int position) {
+    public void onBindViewHolder(final ProductRecyclerAdapter.Holder holder, int position) {
             holder.prodNameTv.setText(mProducts.get(position).getProductName());
             holder.prodPriceTv.setText(getCurrency().getSymbol() + mProducts.get(position).getListPrice());
             String imageURL = mProducts.get(position).getImageURL();
             Picasso.with(mContext).load(mProducts.get(position).getImageURL()).placeholder(R.mipmap.ic_launcher).into(holder.prodImgView);
+            holder.elegantNumberButton.setProduct(mProducts.get(position));
+            holder.elegantNumberButton.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
+            @Override
+            public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
+                Log.d(TAG, String.format("oldValue: %d   newValue: %d", oldValue, newValue));
+                if(oldValue<newValue){
+                    cart.increamentCartCountForProduct(holder.elegantNumberButton.getProduct());
+                }else{
+                    cart.decreamentCartCountForProduct(holder.elegantNumberButton.getProduct());
+                }
+            }
+        });
     }
 
     @Override
@@ -116,6 +134,7 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
         TextView  prodPriceTv;
         ImageView prodImgView;
         ProgressBar progressBar;
+        ElegantNumberButton elegantNumberButton;
 
         public Holder(View itemView) {
             super(itemView);
@@ -124,6 +143,8 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
             prodPriceTv = (TextView) itemView.findViewById(R.id.grid_text_price);
             prodImgView = (ImageView) itemView.findViewById(R.id.grid_image);
             progressBar = (ProgressBar) itemView.findViewById(R.id.product_scroll_progress);
+            elegantNumberButton = (ElegantNumberButton) itemView.findViewById(R.id.number_button);
+            elegantNumberButton.setRange(1,5);
             itemView.setOnClickListener(this);
         }
 
