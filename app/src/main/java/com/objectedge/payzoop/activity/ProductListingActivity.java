@@ -27,7 +27,6 @@ import com.objectedge.payzoop.credentials.DeveloperKey;
 import com.objectedge.payzoop.event.CartEvent;
 import com.objectedge.payzoop.event.ListingPageClickEvent;
 import com.objectedge.payzoop.event.RestEvent;
-import com.objectedge.payzoop.model.APIMetadata;
 import com.objectedge.payzoop.model.Cart;
 import com.objectedge.payzoop.model.CategoryModel;
 import com.objectedge.payzoop.model.ProductModel;
@@ -106,24 +105,7 @@ public class ProductListingActivity extends GenericActivity {
         //showProgress(true);
         OCCApplication.getRootComponent().inject(ProductListingActivity.this); //inject activity into RootComponent
         initGrid();
-        initiaization();
         mEventBus.register(this);//register Events Catcher
-    }
-
-    private void initiaization() {
-        mOCCRestService.getAuthKey(new APIMetadata("admin","admin"));
-    }
-
-    public void onEventMainThread(RestEvent.GetAPIKeySuccessEvent event) {
-        DeveloperKey.setAPIKey(event.key);
-        Toast toast = Toast.makeText(getApplicationContext(),DeveloperKey.APIKey.getId_token(), Toast.LENGTH_SHORT);
-        toast.show();
-    }
-
-    public void onEventMainThread(RestEvent.GetAPIKeyFailureEvent event) {
-        //DeveloperKey.APIKey = event.key;
-        Toast toast = Toast.makeText(getApplicationContext(),"API call failed "+event.response, Toast.LENGTH_SHORT);
-        toast.show();
     }
 
     @Override
