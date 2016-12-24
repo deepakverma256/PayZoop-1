@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -98,6 +99,7 @@ public class ProductListingActivity extends GenericActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, String.format("ProductListingActivity called"));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_listing);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

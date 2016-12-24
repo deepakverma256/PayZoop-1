@@ -4,6 +4,7 @@ package com.objectedge.payzoop.di;
 import com.objectedge.payzoop.activity.CartActivity;
 import com.objectedge.payzoop.activity.PDPActivity;
 import com.objectedge.payzoop.activity.ProductListingActivity;
+import com.objectedge.payzoop.activity.Splash;
 import com.objectedge.payzoop.adapter.NavigationDrawerRecyclerAdapter;
 import com.objectedge.payzoop.adapter.ProductRecyclerAdapter;
 import com.objectedge.payzoop.model.Cart;
@@ -31,4 +32,6 @@ public interface RootComponent {
     void inject(Cart Cart);
 
     void inject(CartActivity cartActivity);
+
+    void inject(Splash splash);
 }

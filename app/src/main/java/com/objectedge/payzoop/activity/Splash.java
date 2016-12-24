@@ -43,18 +43,16 @@ public class Splash extends Activity {
         mEventBus.register(this);//register Events Catcher
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
-        initiaization();
         int secondsDelayed = 1;
         Thread splashThread = new Thread() {
             @Override
             public void run() {
                 try {
+                    initiaization();
                     int waited = 0;
-                    while (_active && (waited < _splashTime)) {
+                    while (_active ) {
+                        Log.d(TAG, String.format("Going to sleep"));
                         sleep(100);
-                        if (_active) {
-                            waited += 100;
-                        }
                     }
                 } catch (Exception e) {
 
