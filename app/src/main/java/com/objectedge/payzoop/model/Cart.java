@@ -82,4 +82,14 @@ public class Cart {
     public void decreamentCartCountForProduct(ProductModel product){
         removeProduct(product);
     }
+
+
+    public Double getTotalSum(){
+        Double sum = 0.0;
+        for (ProductModel item:products) {
+            sum += (Double.parseDouble(item.getListPrice()) * item.quantity);
+        }
+        return sum;
+    }
 }
+

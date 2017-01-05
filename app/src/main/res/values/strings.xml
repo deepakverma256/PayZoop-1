@@ -13,4 +13,8 @@
     <string name="scan">Scan</string>
     <string name="hello_world">Welcome to Android bar Code Scanner By Deepak Verma. </string>
     <string name="blog_url">http://blog.whomeninja.in/android-barcode-scanner/</string>
+    <string name="checksum_generation_url">Checksum Generation URL : </string>
+    <string name="checksum_verification_url">Checksum Verification URL : </string>
+    <string name="sample_checksum_generation_url">https://pguat.paytm.com/merchant-chksum/ChecksumGenerator</string>
+    <string name="sample_checksum_verification_url">https://pguat.paytm.com/merchant-chksum/ValidateChksum</string>
 </resources>
