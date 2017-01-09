@@ -115,7 +115,7 @@ public class PDPActivity extends GenericActivity implements YouTubePlayer.OnInit
 
     private void addToCart(){
         Toast.makeText(this, "Product added to cart : "+product.getId(), Toast.LENGTH_LONG).show();
-        cart.addProduct(product);
+        cart.addToCart(product);
         //miniCartItemCountView.setText(String.valueOf(cart.products.size()));
     }
 

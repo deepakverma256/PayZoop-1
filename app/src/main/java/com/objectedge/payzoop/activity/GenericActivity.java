@@ -7,11 +7,9 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.objectedge.payzoop.R;
 import com.objectedge.payzoop.model.Cart;
-import com.objectedge.payzoop.model.ProductModel;
 
 import javax.inject.Inject;
 
@@ -57,9 +55,4 @@ public class GenericActivity extends AppCompatActivity {
         }
     }
 
-    public void addToCart(ProductModel product){
-        Toast.makeText(this, "Product added to cart : "+product.getId(), Toast.LENGTH_LONG).show();
-        cart.addProduct(product);
-        //miniCartItemCountView.setText(String.valueOf(cart.products.size()));
-    }
 }

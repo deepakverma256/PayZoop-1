@@ -34,6 +34,18 @@ public class ElegantNumberButton extends RelativeLayout {
     private OnValueChangeListener mOnValueChangeListener;
     private ProductModel mProduct;
 
+    public void setNumber(int num){
+        this.currentNumber = num;
+        if(this.currentNumber > finalNumber)
+        {
+            this.currentNumber = finalNumber;
+        }
+        if(this.currentNumber < initialNumber)
+        {
+            this.currentNumber = initialNumber;
+        }
+        textView.setText(String.valueOf(currentNumber));
+    }
 
     public ProductModel getProduct() {
         return mProduct;
@@ -180,9 +192,11 @@ public class ElegantNumberButton extends RelativeLayout {
         void onClick(View view);
 
     }
+
     public interface OnValueChangeListener {
         void onValueChange(ElegantNumberButton view, int oldValue, int newValue);
     }
+
     public void setRange(Integer startingNumber,Integer endingNumber)
     {
         this.initialNumber = startingNumber;

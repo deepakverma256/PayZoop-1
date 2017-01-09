@@ -30,6 +30,7 @@ import com.objectedge.payzoop.event.ListingPageClickEvent;
 import com.objectedge.payzoop.event.RestEvent;
 import com.objectedge.payzoop.model.Cart;
 import com.objectedge.payzoop.model.CategoryModel;
+import com.objectedge.payzoop.model.PZConstants;
 import com.objectedge.payzoop.model.ProductModel;
 import com.objectedge.payzoop.rest.OCCRestService;
 import com.paytm.pgsdk.PaytmMerchant;
@@ -114,6 +115,7 @@ public class ProductListingActivity extends GenericActivity {
         //showProgress(true);
         OCCApplication.getRootComponent().inject(ProductListingActivity.this); //inject activity into RootComponent
         initGrid();
+
         mEventBus.register(this);//register Events Catcher
     }
 
@@ -125,9 +127,15 @@ public class ProductListingActivity extends GenericActivity {
 
     //Currently adding this method to populate dummy product when barcode is scanned. This method would be changed to the event reciever to get the response from rest API once it is ready.
     public void onEventMainThread(RestEvent.GetProductByBarcodeSuccessEvent event) {
-        productListAdapter.addProduct(event.product);
-        addToCart(event.product);
-        offset+=limit;
+        switch(cart.addToCart(event.product)){
+            case PZConstants.PRODUCT_ADDED_TO_CART:
+                productListAdapter.addProduct(event.product);
+                offset+=limit;
+                break;
+            case PZConstants.PRODUCT_IN_CART_ALREADY:
+                productListAdapter.notifyItemChanged(0);
+                break;
+        }
         showProgress(false);
         //productListAdapter.stillLoading = false;
         productListAdapter.notifyDataSetChanged();
@@ -234,6 +242,7 @@ public class ProductListingActivity extends GenericActivity {
             //we have a result
             String scanContent = scanningResult.getContents();
             String scanFormat = scanningResult.getFormatName();
+
             mOCCRestService.getProductByBarcode(DeveloperKey.APIKey.getId_token(),scanContent);
             //onEventMainThread(scanFormat);
             mEventBus.post(new CartEvent.GetProductForBarcodeEvent(scanContent));

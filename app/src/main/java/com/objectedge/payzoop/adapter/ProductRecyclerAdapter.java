@@ -106,6 +106,7 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
             holder.prodPriceTv.setText(getCurrency().getSymbol() + mProducts.get(position).getListPrice());
             String imageURL = mProducts.get(position).getImageURL();
             Picasso.with(mContext).load(mProducts.get(position).getImageURL()).placeholder(R.mipmap.ic_launcher).into(holder.prodImgView);
+
             holder.elegantNumberButton.setProduct(mProducts.get(position));
             holder.elegantNumberButton.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override
@@ -118,6 +119,7 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
                 }
             }
         });
+        holder.elegantNumberButton.setNumber(mProducts.get(position).getQuantity());
     }
 
     @Override

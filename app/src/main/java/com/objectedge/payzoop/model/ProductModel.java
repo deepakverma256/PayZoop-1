@@ -26,9 +26,11 @@ public class ProductModel {
     String skuCode;
     String priceId;
     double salePrice;
-    int quantity = 1;
 
-    public int getQuantity() {
+
+    Integer quantity = 1;
+
+    public Integer getQuantity() {
         return quantity;
     }
 
@@ -120,5 +122,13 @@ public class ProductModel {
         }
 
         return matchFound;
+    }
+
+    Boolean equals(ProductModel product){
+        if(product.getBarcodeId().equals(this.barcodeId)){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
