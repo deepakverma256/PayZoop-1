@@ -21,6 +21,7 @@ import com.objectedge.payzoop.event.CartEvent;
 import com.objectedge.payzoop.event.ListingPageClickEvent;
 import com.objectedge.payzoop.event.RestEvent;
 import com.objectedge.payzoop.model.Cart;
+import com.objectedge.payzoop.model.DishModel;
 import com.objectedge.payzoop.model.ProductModel;
 import com.objectedge.payzoop.rest.OCCRestService;
 import com.objectedge.payzoop.rest.RestClient;
@@ -35,7 +36,7 @@ import de.greenrobot.event.EventBus;
 
 
 public class PDPActivity extends GenericActivity implements YouTubePlayer.OnInitializedListener{
-    public static ProductModel product;
+    public static DishModel product;
     private YouTubePlayer youTubePlayer;
     private YouTubePlayerFragment youTubePlayerFragment;
 

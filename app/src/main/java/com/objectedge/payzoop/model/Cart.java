@@ -25,28 +25,34 @@ public class Cart {
     public Cart(){
         OCCApplication.getRootComponent().inject(this);}
 
-    public List<ProductModel> products = new ArrayList<ProductModel>();
+    public List<DishModel> products = new ArrayList<DishModel>();
 
-    public void addProduct(ProductModel product){
+    private void addProduct(DishModel product){
         if(products.contains(product)){
-            ProductModel productInCart = null;
-            for (ProductModel item:products) {
+            DishModel productInCart = null;
+            for (DishModel item:products) {
                 if(item.id == product.id){
                     productInCart = item;
                     break;
                 }
             }
-            productInCart.quantity += 1;
+            increamentProductCount(productInCart);
         }else {
             products.add(product);
         }
         mEventBus.post(new CartEvent.UpdateCart(getTotalItemsInCart()));
     }
 
-    public void removeProduct(ProductModel product){
+    private void increamentProductCount(DishModel productInCart) {
+        productInCart.quantity += 1;
+        //Integer num = Integer.parseInt(productInCart.getHolder().elegantNumberButton.getNumber());
+       // productInCart.getHolder().elegantNumberButton.setNumber(productInCart.getQuantity().toString());
+    }
+
+    private void removeProduct(DishModel product){
         if(products.contains(product)){
-            ProductModel productInCart = null;
-            for (ProductModel item:products) {
+            DishModel productInCart = null;
+            for (DishModel item:products) {
                 if(item.id == product.id){
                     productInCart = item;
                     Log.d(TAG, String.format("Product found in cart for removal. Product_id : %s",product.getId() ));
@@ -68,28 +74,43 @@ public class Cart {
 
     private int getTotalItemsInCart(){
         int count = 0;
-        for (ProductModel item:products) {
+        for (DishModel item:products) {
                 count += item.getQuantity();
         }
         TotalItemCount = count;
         return TotalItemCount;
     }
 
-    public void increamentCartCountForProduct(ProductModel product){
+    public void increamentCartCountForProduct(DishModel product){
         addProduct(product);
     }
 
-    public void decreamentCartCountForProduct(ProductModel product){
+    public void decreamentCartCountForProduct(DishModel product){
         removeProduct(product);
     }
 
 
     public Double getTotalSum(){
         Double sum = 0.0;
-        for (ProductModel item:products) {
-            sum += (Double.parseDouble(item.getListPrice()) * item.quantity);
+        for (DishModel item:products) {
+            sum += ((item.getPrice()) * item.quantity);
         }
         return sum;
+    }
+
+    public String addToCart(DishModel product){
+        for (DishModel prod : products) {
+            if(product.equals(prod)){
+                increamentProductCount(prod);
+                mEventBus.post(new CartEvent.UpdateCart(getTotalItemsInCart()));
+                return "PRODUCT_IN_CART_ALREADY";
+            }
+        }
+        addProduct(product);
+        mEventBus.post(new CartEvent.UpdateCart(getTotalItemsInCart()));
+        return "PRODUCT_ADDED_TO_CART";
+        //miniCartItemCountView.setText(String.valueOf(cart.products.size()));
+
     }
 }
 

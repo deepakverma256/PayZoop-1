@@ -2,8 +2,10 @@ package com.objectedge.payzoop.event;
 
 
 import com.objectedge.payzoop.model.APIKey;
+import com.objectedge.payzoop.model.DishModel;
 import com.objectedge.payzoop.model.GetAllCategoriesListModel;
 import com.objectedge.payzoop.model.GetProductsListModel;
+import com.objectedge.payzoop.model.MenuModel;
 import com.objectedge.payzoop.model.ProductModel;
 
 
@@ -93,4 +95,33 @@ public class RestEvent extends Event {
     public static class GetProductByBarcodeFailureEvent extends RestEvent {
     }
 
+    public static class GetDishSuccessEvent extends RestEvent {
+
+        public DishModel dish;
+
+
+        public GetDishSuccessEvent(DishModel dish) {
+            this.dish = dish;
+        }
+    }
+
+
+
+    public static class GetDishFailureEvent extends RestEvent {
+    }
+
+    public static class GetMenuSuccessEvent extends RestEvent {
+
+        public MenuModel menu;
+
+
+        public GetMenuSuccessEvent(MenuModel menu) {
+            this.menu = menu;
+        }
+    }
+
+
+
+    public static class GetMenuFailureEvent extends RestEvent {
+    }
 }

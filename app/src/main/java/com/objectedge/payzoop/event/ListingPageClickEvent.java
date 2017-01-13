@@ -1,6 +1,6 @@
 package com.objectedge.payzoop.event;
 
-import com.objectedge.payzoop.model.ProductModel;
+import com.objectedge.payzoop.model.DishModel;
 
 /**
  * Created by deepak.verma on 10-08-2016.
@@ -8,9 +8,9 @@ import com.objectedge.payzoop.model.ProductModel;
 public class ListingPageClickEvent extends Event{
 
     public static class GoToPDPEvent extends ListingPageClickEvent{
-        public ProductModel product;
+        public DishModel product;
 
-        public GoToPDPEvent(ProductModel product){
+        public GoToPDPEvent(DishModel product){
             this.product = product;
         }
     }

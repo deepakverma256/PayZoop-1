@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.objectedge.payzoop.R;
-import com.objectedge.payzoop.model.ProductModel;
+import com.objectedge.payzoop.model.DishModel;
 
 /**
  * Created by Deepak Verma on 24/12/16.
@@ -32,7 +32,7 @@ public class ElegantNumberButton extends RelativeLayout {
     private TextView textView;
     private View view;
     private OnValueChangeListener mOnValueChangeListener;
-    private ProductModel mProduct;
+    private DishModel mProduct;
 
     public void setNumber(int num){
         this.currentNumber = num;
@@ -47,11 +47,11 @@ public class ElegantNumberButton extends RelativeLayout {
         textView.setText(String.valueOf(currentNumber));
     }
 
-    public ProductModel getProduct() {
+    public DishModel getProduct() {
         return mProduct;
     }
 
-    public void setProduct(ProductModel mProduct) {
+    public void setProduct(DishModel mProduct) {
         this.mProduct = mProduct;
     }
 

@@ -26,6 +26,25 @@ public class ProductModel {
     String skuCode;
     String priceId;
     double salePrice;
+    String ingredient;
+
+    public double getPreparationTime() {
+        return preparationTime;
+    }
+
+    public void setPreparationTime(double preparationTime) {
+        this.preparationTime = preparationTime;
+    }
+
+    public String getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(String ingredient) {
+        this.ingredient = ingredient;
+    }
+
+    double preparationTime;
 
 
     Integer quantity = 1;

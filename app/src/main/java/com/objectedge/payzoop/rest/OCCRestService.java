@@ -7,6 +7,7 @@ import com.objectedge.payzoop.model.APIKey;
 import com.objectedge.payzoop.model.APIMetadata;
 import com.objectedge.payzoop.model.GetAllCategoriesListModel;
 import com.objectedge.payzoop.model.GetProductsListModel;
+import com.objectedge.payzoop.model.MenuModel;
 import com.objectedge.payzoop.model.ProductModel;
 
 import javax.inject.Inject;
@@ -154,6 +155,24 @@ public class OCCRestService {
             @Override
             public void onFailure(Call<ProductModel> call, Throwable t) {
                 mEventBus.post(new RestEvent.GetProductByBarcodeFailureEvent());
+            }
+        });
+    }
+
+    public void getMenuFromAPI(String authKey) {
+        mApi.getDishFromAPI(authKey).enqueue(new Callback<MenuModel>() {
+            @Override
+            public void onResponse(Call<MenuModel> call, Response<MenuModel> response) {
+                if(response.isSuccessful()) {
+                    mEventBus.post(new RestEvent.GetMenuSuccessEvent(response.body()));
+                } else {
+                    mEventBus.post(new RestEvent.GetMenuFailureEvent());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MenuModel> call, Throwable t) {
+                mEventBus.post(new RestEvent.GetMenuFailureEvent());
             }
         });
     }

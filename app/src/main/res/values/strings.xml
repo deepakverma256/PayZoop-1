@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PayZoop</string>
+    <string name="app_name">RestoAppProto</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="get_products_list_error">Products list is unavailable</string>
     <string name="get_product_error">Product is unavailable</string>

@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 import de.greenrobot.event.EventBus;
 
+
 public class Splash extends Activity {
     private static final String TAG = Splash.class.getSimpleName();
 
@@ -59,7 +60,7 @@ public class Splash extends Activity {
                 } finally {
 
                     startActivity(new Intent(Splash.this,
-                            ProductListingActivity.class));
+                            ScannerActivity.class));
                     finish();
                 }
             };
@@ -88,4 +89,5 @@ public class Splash extends Activity {
         toast.show();
         _active = false;
     }
+
 }

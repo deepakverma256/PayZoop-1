@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,22 +15,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.objectedge.payzoop.EndlessRecyclerViewScrollListener;
 import com.objectedge.payzoop.OCCApplication;
 import com.objectedge.payzoop.R;
 import com.objectedge.payzoop.adapter.NavigationDrawerRecyclerAdapter;
 import com.objectedge.payzoop.adapter.ProductRecyclerAdapter;
-import com.objectedge.payzoop.camera.BarCodeScanner;
 import com.objectedge.payzoop.credentials.DeveloperKey;
 import com.objectedge.payzoop.event.CartEvent;
 import com.objectedge.payzoop.event.ListingPageClickEvent;
 import com.objectedge.payzoop.event.RestEvent;
 import com.objectedge.payzoop.model.Cart;
 import com.objectedge.payzoop.model.CategoryModel;
+import com.objectedge.payzoop.model.DishModel;
+import com.objectedge.payzoop.model.MenuModel;
 import com.objectedge.payzoop.model.PZConstants;
-import com.objectedge.payzoop.model.ProductModel;
 import com.objectedge.payzoop.rest.OCCRestService;
 import com.paytm.pgsdk.PaytmMerchant;
 import com.paytm.pgsdk.PaytmOrder;
@@ -51,7 +48,7 @@ import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
 
-public class ProductListingActivity extends GenericActivity {
+public class ProductListingActivity extends GenericActivity{
 
     private static final String TAG = ProductListingActivity.class.getSimpleName();
     public static final String KEY_ID = "id";
@@ -86,8 +83,6 @@ public class ProductListingActivity extends GenericActivity {
     @Inject
     Cart cart;
 
-    BarCodeScanner barCodeScanner;
-
     private String currentCategory;
     private EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener;
 
@@ -100,9 +95,9 @@ public class ProductListingActivity extends GenericActivity {
     private int limit=5;
     private Boolean beginning = true;
 
+
+
     ProductListingActivity(){
-        BarCodeScanner bcs = new BarCodeScanner();
-        barCodeScanner = bcs;
     }
 
     @Override
@@ -115,9 +110,14 @@ public class ProductListingActivity extends GenericActivity {
         //showProgress(true);
         OCCApplication.getRootComponent().inject(ProductListingActivity.this); //inject activity into RootComponent
         initGrid();
-
+        getDishFromAPI();
         mEventBus.register(this);//register Events Catcher
     }
+
+    private void getDishFromAPI() {
+        mOCCRestService.getMenuFromAPI(DeveloperKey.APIKey.getId_token());
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -126,10 +126,10 @@ public class ProductListingActivity extends GenericActivity {
     }
 
     //Currently adding this method to populate dummy product when barcode is scanned. This method would be changed to the event reciever to get the response from rest API once it is ready.
-    public void onEventMainThread(RestEvent.GetProductByBarcodeSuccessEvent event) {
-        switch(cart.addToCart(event.product)){
+    public void onEventMainThread(RestEvent.GetDishSuccessEvent event) {
+        switch(cart.addToCart(event.dish)){
             case PZConstants.PRODUCT_ADDED_TO_CART:
-                productListAdapter.addProduct(event.product);
+                productListAdapter.addProduct(event.dish);
                 offset+=limit;
                 break;
             case PZConstants.PRODUCT_IN_CART_ALREADY:
@@ -141,19 +141,49 @@ public class ProductListingActivity extends GenericActivity {
         productListAdapter.notifyDataSetChanged();
     }
 
-    public void onEventMainThread(RestEvent.GetProductByBarcodeFailureEvent event) {
+    //Currently adding this method to populate dummy product when barcode is scanned. This method would be changed to the event reciever to get the response from rest API once it is ready.
+    public void onEventMainThread(RestEvent.GetMenuSuccessEvent event) {
+        for (DishModel dish : event.menu.getDishes()) {
+            productListAdapter.addProduct(dish);
+            offset+=limit;
+        }
+        showProgress(false);
+        //productListAdapter.stillLoading = false;
+        productListAdapter.notifyDataSetChanged();
+    }
+
+    public void onEventMainThread(RestEvent.GetMenuFailureEvent event) {
+        Toast toast = Toast.makeText(getApplicationContext(),"API call for product failed ", Toast.LENGTH_SHORT);
+        toast.show();
+        for (DishModel dish : getDummyMenu().getDishes()) {
+            productListAdapter.addProduct(dish);
+            offset+=limit;
+        }
+        showProgress(false);
+        //productListAdapter.stillLoading = false;
+        productListAdapter.notifyDataSetChanged();
+    }
+
+
+    public void onEventMainThread(RestEvent.GetDishFailureEvent event) {
         Toast toast = Toast.makeText(getApplicationContext(),"API call for product failed ", Toast.LENGTH_SHORT);
         toast.show();
     }
 
-    private ProductModel getDummyProduct(){
-        ProductModel dummyProd = new ProductModel();
-        dummyProd.setProductName("NoteBook");
-        dummyProd.setId("BK1");
-        dummyProd.setListPrice("45.3");
-        dummyProd.setDescription("This is an awesome looking and super lucky book. Padna mut pass ho jaogay.");
-        dummyProd.setImageURL("");
-        return dummyProd;
+    private MenuModel getDummyMenu(){
+        MenuModel dummyMenu = new MenuModel();
+        dummyMenu.setDishes(new ArrayList<DishModel>());
+        DishModel dish = new DishModel();
+        dish.setName("Biryani");
+        dish.setId("BK1");
+        dish.setPrice(45.3);
+        dish.setDescription("Rice ke sath khao paneer.");
+        dish.setImageUrl("http://www.tasty-indian-recipes.com/wp-content/uploads/2012/06/Paneer-Biryani.jpg");
+        dish.setIngredient("Rice, Paneer");
+        dish.setPreparationTime(15);
+        dummyMenu.getDishes().add(dish);
+
+        return dummyMenu;
     }
 
     //Event Bus Actions
@@ -174,7 +204,7 @@ public class ProductListingActivity extends GenericActivity {
         //formatTxt = (TextView) findViewById(R.id.scan_format);
         //contentTxt =  (TextView) findViewById(R.id.scan_content);
 
-        productListAdapter = new ProductRecyclerAdapter(this, new ArrayList<ProductModel>());
+        productListAdapter = new ProductRecyclerAdapter(this, new ArrayList<DishModel>());
         final LinearLayoutManager layoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         recyclerView.setLayoutManager(layoutManager1);
@@ -222,35 +252,11 @@ public class ProductListingActivity extends GenericActivity {
             });
     }
 
-    public void scanNow(View view){
+    /*public void scanNow(View view){
         Snackbar.make(view, "Scaning started", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
         barCodeScanner.scanNow(view,this);
-    }
-
-    /**
-     * function handle scan result
-     * @param requestCode
-     * @param resultCode
-     * @param intent
-     */
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        //retrieve scan result
-        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-
-        if (scanningResult != null) {
-            //we have a result
-            String scanContent = scanningResult.getContents();
-            String scanFormat = scanningResult.getFormatName();
-
-            mOCCRestService.getProductByBarcode(DeveloperKey.APIKey.getId_token(),scanContent);
-            //onEventMainThread(scanFormat);
-            mEventBus.post(new CartEvent.GetProductForBarcodeEvent(scanContent));
-        }else{
-            Toast toast = Toast.makeText(getApplicationContext(),"No scan data received!", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

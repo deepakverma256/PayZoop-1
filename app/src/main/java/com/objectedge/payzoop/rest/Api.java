@@ -5,6 +5,7 @@ import com.objectedge.payzoop.model.APIKey;
 import com.objectedge.payzoop.model.APIMetadata;
 import com.objectedge.payzoop.model.GetAllCategoriesListModel;
 import com.objectedge.payzoop.model.GetProductsListModel;
+import com.objectedge.payzoop.model.MenuModel;
 import com.objectedge.payzoop.model.ProductModel;
 
 import retrofit2.Call;
@@ -38,4 +39,7 @@ public interface Api {
 
     @GET("api/products/barcode/{barcode}")
     Call<ProductModel> getProductByBarcode(@Header("Authorization") String authorization, @Path("barcode") String barcode);
+
+    @GET("api/menu-items")
+    Call<MenuModel> getDishFromAPI(@Header("Authorization") String authorization);
 }

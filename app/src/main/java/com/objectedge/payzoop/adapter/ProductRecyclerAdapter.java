@@ -16,7 +16,7 @@ import com.objectedge.payzoop.R;
 import com.objectedge.payzoop.customView.ElegantNumberButton;
 import com.objectedge.payzoop.event.ListingPageClickEvent;
 import com.objectedge.payzoop.model.Cart;
-import com.objectedge.payzoop.model.ProductModel;
+import com.objectedge.payzoop.model.DishModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -46,23 +46,23 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
     @Inject
     Cart cart;
 
-    public List<ProductModel> getProducts() {
+    public List<DishModel> getProducts() {
         return mProducts;
     }
 
-    public void addProducts(List<ProductModel> mProducts) {
+    public void addProducts(List<DishModel> mProducts) {
         this.mProducts.addAll(mProducts);
     }
 
-    public void addProduct(ProductModel product){
+    public void addProduct(DishModel product){
         this.mProducts.add(product);
     }
 
     public void flushProductList(){
-        mProducts = new ArrayList<ProductModel>();
+        mProducts = new ArrayList<DishModel>();
     }
 
-    private List<ProductModel> mProducts;
+    private List<DishModel> mProducts;
 
     private Context mContext;
 
@@ -81,7 +81,7 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
     };
 
 
-    public ProductRecyclerAdapter(Context context, List<ProductModel> objects) {
+    public ProductRecyclerAdapter(Context context, List<DishModel> objects) {
         OCCApplication.getRootComponent().inject(this);
         mProducts = objects;
         mContext = context;
@@ -102,10 +102,10 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
 
     @Override
     public void onBindViewHolder(final ProductRecyclerAdapter.Holder holder, int position) {
-            holder.prodNameTv.setText(mProducts.get(position).getProductName());
-            holder.prodPriceTv.setText(getCurrency().getSymbol() + mProducts.get(position).getListPrice());
-            String imageURL = mProducts.get(position).getImageURL();
-            Picasso.with(mContext).load(mProducts.get(position).getImageURL()).placeholder(R.mipmap.ic_launcher).into(holder.prodImgView);
+            holder.prodNameTv.setText(mProducts.get(position).getName());
+            holder.prodPriceTv.setText(getCurrency().getSymbol() + mProducts.get(position).getPrice());
+            String imageURL = mProducts.get(position).getImageUrl();
+            Picasso.with(mContext).load(mProducts.get(position).getImageUrl()).placeholder(R.mipmap.ic_launcher).into(holder.prodImgView);
 
             holder.elegantNumberButton.setProduct(mProducts.get(position));
             holder.elegantNumberButton.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
