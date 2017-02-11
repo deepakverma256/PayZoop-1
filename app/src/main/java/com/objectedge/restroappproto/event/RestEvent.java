@@ -5,7 +5,7 @@ import com.objectedge.restroappproto.model.APIKey;
 import com.objectedge.restroappproto.model.DishModel;
 import com.objectedge.restroappproto.model.GetAllCategoriesListModel;
 import com.objectedge.restroappproto.model.GetProductsListModel;
-import com.objectedge.restroappproto.model.MenuModel;
+import com.objectedge.restroappproto.model.SubMenuModel;
 import com.objectedge.restroappproto.model.ProductModel;
 
 
@@ -112,10 +112,10 @@ public class RestEvent extends Event {
 
     public static class GetMenuSuccessEvent extends RestEvent {
 
-        public MenuModel menu;
+        public SubMenuModel menu;
 
 
-        public GetMenuSuccessEvent(MenuModel menu) {
+        public GetMenuSuccessEvent(SubMenuModel menu) {
             this.menu = menu;
         }
     }

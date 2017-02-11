@@ -17,4 +17,5 @@
     <string name="checksum_verification_url">Checksum Verification URL : </string>
     <string name="sample_checksum_generation_url">https://pguat.paytm.com/merchant-chksum/ChecksumGenerator</string>
     <string name="sample_checksum_verification_url">https://pguat.paytm.com/merchant-chksum/ValidateChksum</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,14 +24,15 @@ import com.objectedge.restroappproto.OCCApplication;
 import com.objectedge.restroappproto.R;
 import com.objectedge.restroappproto.adapter.NavigationDrawerRecyclerAdapter;
 import com.objectedge.restroappproto.adapter.ProductRecyclerAdapter;
-import com.objectedge.restroappproto.credentials.DeveloperKey;
 import com.objectedge.restroappproto.event.CartEvent;
 import com.objectedge.restroappproto.event.ListingPageClickEvent;
 import com.objectedge.restroappproto.event.RestEvent;
+import com.objectedge.restroappproto.helper.MenuHelper;
 import com.objectedge.restroappproto.model.Cart;
 import com.objectedge.restroappproto.model.CategoryModel;
 import com.objectedge.restroappproto.model.DishModel;
 import com.objectedge.restroappproto.model.MenuModel;
+import com.objectedge.restroappproto.model.SubMenuModel;
 import com.objectedge.restroappproto.rest.OCCRestService;
 import com.paytm.pgsdk.PaytmMerchant;
 import com.paytm.pgsdk.PaytmOrder;
@@ -66,6 +66,13 @@ public class ProductListingActivity extends com.objectedge.restroappproto.activi
     @Inject
     Cart cart;
 
+    @Inject
+    MenuHelper menuHelper;
+
+    @BindView(R.id.left_drawer)
+    RecyclerView drawerList;
+
+    private NavigationDrawerRecyclerAdapter categoryListAdapter;
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
@@ -84,6 +91,11 @@ public class ProductListingActivity extends com.objectedge.restroappproto.activi
         initGrid();
         getDishFromAPI();*/
         OCCApplication.getRootComponent().inject(ProductListingActivity.this); //inject activity into RootComponent
+        ButterKnife.bind(this);
+        initializeData();
+
+
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -92,6 +104,23 @@ public class ProductListingActivity extends com.objectedge.restroappproto.activi
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mEventBus.register(this);//register Events Catcher
+
+
+    }
+
+    private void initializeData() {
+        categoryListAdapter = new NavigationDrawerRecyclerAdapter(getApplicationContext(), new ArrayList<CategoryModel>());
+
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        // Set the adapter for the list view
+        drawerList.setLayoutManager(layoutManager2);
+        drawerList.setAdapter(categoryListAdapter);
+
+        loadMenu();
+    }
+
+    private void loadMenu() {
+        menuHelper.setMenu(MenuModel.getDummyMenu());
     }
 
 
@@ -237,12 +266,6 @@ public class ProductListingActivity extends com.objectedge.restroappproto.activi
         @BindView(R.id.product_listing_recylcer)
         RecyclerView recyclerView;
 
-        @BindView (R.id.drawer_layout)
-        DrawerLayout drawerLayout;
-
-        @BindView(R.id.left_drawer)
-        RecyclerView drawerList;
-
         @BindString(R.string.get_product_error)
         String getProductError;
 
@@ -259,7 +282,7 @@ public class ProductListingActivity extends com.objectedge.restroappproto.activi
         private EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener;
 
         private ProductRecyclerAdapter productListAdapter;
-        private NavigationDrawerRecyclerAdapter categoryListAdapter;
+
 
         private Boolean initialRun = true;
 
@@ -271,6 +294,8 @@ public class ProductListingActivity extends com.objectedge.restroappproto.activi
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+
+        public static final String ARG_OBJECT = "object";
 
         public PlaceholderFragment() {
         }
@@ -298,14 +323,26 @@ public class ProductListingActivity extends com.objectedge.restroappproto.activi
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.activity_product_listing, container, false);
+
             ButterKnife.bind(this,rootView);
             initGrid();
-            getDishFromAPI();
+
+            Bundle args = getArguments();
+            Integer position = args.getInt(ARG_OBJECT);
+
+            populateDishItems(position);
+
             return rootView;
         }
 
-        private void getDishFromAPI() {
-            mOCCRestService.getMenuFromAPI(DeveloperKey.APIKey.getId_token());
+        private void populateDishItems(Integer position) {
+            //mOCCRestService.getMenuFromAPI(DeveloperKey.APIKey.getId_token());
+            for (DishModel dish : MenuHelper.menu.getSubMenus().get(position).getDishes()) {
+                productListAdapter.addProduct(dish);
+                offset+=limit;
+            }
+            showProgress(false);
+            productListAdapter.notifyDataSetChanged();
         }
         //Currently adding this method to populate dummy product when barcode is scanned. This method would be changed to the event reciever to get the response from rest API once it is ready.
         public void onEventMainThread(RestEvent.GetMenuSuccessEvent event) {
@@ -336,8 +373,8 @@ public class ProductListingActivity extends com.objectedge.restroappproto.activi
             toast.show();
         }
 
-        private MenuModel getDummyMenu(){
-            MenuModel dummyMenu = new MenuModel();
+        private SubMenuModel getDummyMenu(){
+            SubMenuModel dummyMenu = new SubMenuModel();
             dummyMenu.setDishes(new ArrayList<DishModel>());
             DishModel dish = new DishModel();
             dish.setName("Biryani");
@@ -386,12 +423,7 @@ public class ProductListingActivity extends com.objectedge.restroappproto.activi
                 }
             };
             recyclerView.addOnScrollListener(endlessRecyclerViewScrollListener);
-            categoryListAdapter = new NavigationDrawerRecyclerAdapter(getActivity(), new ArrayList<CategoryModel>());
 
-            LinearLayoutManager layoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-            // Set the adapter for the list view
-            drawerList.setLayoutManager(layoutManager2);
-            drawerList.setAdapter(categoryListAdapter);
         }
 
         private void flushAllProducts(){
@@ -420,6 +452,8 @@ public class ProductListingActivity extends com.objectedge.restroappproto.activi
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+        MenuModel menu= menuHelper.getMenu();
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -428,26 +462,25 @@ public class ProductListingActivity extends com.objectedge.restroappproto.activi
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
+            Fragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putInt(PlaceholderFragment.ARG_OBJECT, position); // Our object is just an integer :-P
+            fragment.setArguments(args);
+
             return PlaceholderFragment.newInstance(position + 1);
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 5;
+            return menu.getSubMenus().size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "SECTION 1";
-                case 1:
-                    return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
-            }
-            return null;
+            MenuModel menu= menuHelper.getMenu();
+
+            return menu.getSubMenus().get(position).getName() + " "+ position;
         }
     }
 }

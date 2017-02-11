@@ -5,7 +5,7 @@ import com.objectedge.restroappproto.model.APIKey;
 import com.objectedge.restroappproto.model.APIMetadata;
 import com.objectedge.restroappproto.model.GetAllCategoriesListModel;
 import com.objectedge.restroappproto.model.GetProductsListModel;
-import com.objectedge.restroappproto.model.MenuModel;
+import com.objectedge.restroappproto.model.SubMenuModel;
 import com.objectedge.restroappproto.model.ProductModel;
 
 import retrofit2.Call;
@@ -41,5 +41,5 @@ public interface Api {
     Call<ProductModel> getProductByBarcode(@Header("Authorization") String authorization, @Path("barcode") String barcode);
 
     @GET("api/menu-items")
-    Call<MenuModel> getDishFromAPI(@Header("Authorization") String authorization);
+    Call<SubMenuModel> getDishFromAPI(@Header("Authorization") String authorization);
 }

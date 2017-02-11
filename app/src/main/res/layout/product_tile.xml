@@ -12,7 +12,7 @@
     android:layout_margin="10dp"
     card_view:contentPadding="16dp"
     card_view:cardCornerRadius="4dp"
-    tools:context="com.objectedge.payzoop.activity.ProductListingActivity">
+    tools:context="com.objectedge.restroappproto.activity.ProductListingActivity">
 <LinearLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -74,7 +74,7 @@
         android:orientation="horizontal"
         android:layout_gravity="right|bottom">
 
-        <com.objectedge.payzoop.customView.ElegantNumberButton
+        <com.objectedge.restroappproto.customView.ElegantNumberButton
             android:id="@+id/number_button"
             android:layout_width="100dp"
             app:backGroundColor="@color/colorPrimary"

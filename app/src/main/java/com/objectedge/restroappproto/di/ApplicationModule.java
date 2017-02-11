@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.view.LayoutInflater;
 
+import com.objectedge.restroappproto.helper.MenuHelper;
 import com.objectedge.restroappproto.model.Cart;
 
 import javax.inject.Singleton;
@@ -52,5 +53,11 @@ public class ApplicationModule {
     @Singleton
     Cart provideCart() {
         return new Cart();
+    }
+
+    @Provides
+    @Singleton
+    MenuHelper provideMenuHelper() {
+        return new MenuHelper();
     }
 }

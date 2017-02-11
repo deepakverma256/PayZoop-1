@@ -77,5 +77,15 @@ public class DishModel {
     String imageUrl;
     String description;
 
-
+    public static DishModel getDummyDish(){
+        DishModel dish = new DishModel();
+        dish.setName("Biryani");
+        dish.setId("BK1");
+        dish.setPrice(45.3);
+        dish.setDescription("Rice ke sath khao paneer.");
+        dish.setImageUrl("http://www.tasty-indian-recipes.com/wp-content/uploads/2012/06/Paneer-Biryani.jpg");
+        dish.setIngredient("Rice, Paneer");
+        dish.setPreparationTime(15);
+        return dish;
+    }
 }

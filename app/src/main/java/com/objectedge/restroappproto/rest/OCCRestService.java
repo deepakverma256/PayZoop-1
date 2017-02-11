@@ -7,7 +7,7 @@ import com.objectedge.restroappproto.model.APIKey;
 import com.objectedge.restroappproto.model.APIMetadata;
 import com.objectedge.restroappproto.model.GetAllCategoriesListModel;
 import com.objectedge.restroappproto.model.GetProductsListModel;
-import com.objectedge.restroappproto.model.MenuModel;
+import com.objectedge.restroappproto.model.SubMenuModel;
 import com.objectedge.restroappproto.model.ProductModel;
 
 import javax.inject.Inject;
@@ -160,9 +160,9 @@ public class OCCRestService {
     }
 
     public void getMenuFromAPI(String authKey) {
-        mApi.getDishFromAPI(authKey).enqueue(new Callback<MenuModel>() {
+        mApi.getDishFromAPI(authKey).enqueue(new Callback<SubMenuModel>() {
             @Override
-            public void onResponse(Call<MenuModel> call, Response<MenuModel> response) {
+            public void onResponse(Call<SubMenuModel> call, Response<SubMenuModel> response) {
                 if(response.isSuccessful()) {
                     mEventBus.post(new RestEvent.GetMenuSuccessEvent(response.body()));
                 } else {
@@ -171,7 +171,7 @@ public class OCCRestService {
             }
 
             @Override
-            public void onFailure(Call<MenuModel> call, Throwable t) {
+            public void onFailure(Call<SubMenuModel> call, Throwable t) {
                 mEventBus.post(new RestEvent.GetMenuFailureEvent());
             }
         });

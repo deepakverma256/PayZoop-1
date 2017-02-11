@@ -2,7 +2,9 @@ package com.objectedge.restroappproto.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -63,7 +65,7 @@ public class Splash extends Activity implements ZXingScannerView.ResultHandler{
         builder.setTitle("Scan result");
         builder.setMessage(result.getText());
         AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+        //alertDialog.show();
 
         Intent myIntent = new Intent(Splash.this, com.objectedge.restroappproto.activity.ProductListingActivity.class);
         myIntent.putExtra(JSON_STRING, result.getText());
@@ -72,7 +74,36 @@ public class Splash extends Activity implements ZXingScannerView.ResultHandler{
         //mScannerView.resumeCameraPreview(this);
     }
 
+    private class AsyncTaskRunner extends AsyncTask<String, String, String> {
 
+        private String resp;
+        ProgressDialog progressDialog;
+
+        @Override
+        protected String doInBackground(String... params) {
+            publishProgress("Sleeping..."); // Calls onProgressUpdate()
+            try {
+                int time = Integer.parseInt(params[0])*1000;
+                initiaization();
+                Thread.sleep(time);
+                resp = "Slept for " + params[0] + " seconds";
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                resp = e.getMessage();
+            } catch (Exception e) {
+                e.printStackTrace();
+                resp = e.getMessage();
+            }
+            return resp;
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            // execution of result of Long time consuming operation
+            scan();
+        }
+    }
 
     /** Called when the activity is first created. */
     @Override
@@ -84,27 +115,10 @@ public class Splash extends Activity implements ZXingScannerView.ResultHandler{
         mEventBus.register(this);//register Events Catcher
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
-        int secondsDelayed = 1;
-        Thread splashThread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    initiaization();
-                    int waited = 0;
-                    while (_active ) {
-                        Log.d(TAG, String.format("Going to sleep"));
-                        sleep(100);
-                    }
-                } catch (Exception e) {
-
-                } finally {
-                    //startActivity(new Intent(Splash.this,
-                    //        com.objectedge.restroappproto.activity.ScannerActivity.class));
-                    //finish();
-                }
-            };
-        };
-        splashThread.start();
+        Integer secondsDelayed = 5;
+        AsyncTaskRunner runner = new AsyncTaskRunner();
+        String sleepTime = secondsDelayed.toString();
+        runner.execute(sleepTime);
     }
 
     private void initiaization() {

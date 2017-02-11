@@ -7,6 +7,7 @@ import com.objectedge.restroappproto.activity.ProductListingActivity;
 import com.objectedge.restroappproto.activity.Splash;
 import com.objectedge.restroappproto.adapter.NavigationDrawerRecyclerAdapter;
 import com.objectedge.restroappproto.adapter.ProductRecyclerAdapter;
+import com.objectedge.restroappproto.helper.MenuHelper;
 import com.objectedge.restroappproto.model.Cart;
 import com.objectedge.restroappproto.rest.OCCRestService;
 
@@ -31,7 +32,9 @@ public interface RootComponent {
 
     void inject(NavigationDrawerRecyclerAdapter navigationGridAdapter);
 
-    void inject(Cart Cart);
+    void inject(Cart cart);
+
+    void inject(MenuHelper menuHelper);
 
     void inject(CartActivity cartActivity);
 

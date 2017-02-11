@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.objectedge.payzoop.activity.CartActivity">
+    tools:context="com.objectedge.restroappproto.activity.CartActivity">
 
     <include layout="@layout/content_cart" />
 
