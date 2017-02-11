@@ -1,4 +1,4 @@
-package com.objectedge.payzoop;
+package com.objectedge.restroappproto;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
