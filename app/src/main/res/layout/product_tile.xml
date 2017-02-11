@@ -9,9 +9,10 @@
     android:layout_height="200dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:layout_margin="10dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp"
     card_view:contentPadding="16dp"
-    card_view:cardCornerRadius="4dp"
+    card_view:cardCornerRadius="0dp"
     tools:context="com.objectedge.restroappproto.activity.ProductListingActivity">
 <LinearLayout
     xmlns:tools="http://schemas.android.com/tools"
