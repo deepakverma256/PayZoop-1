@@ -4,10 +4,11 @@
     android:layout_height="fill_parent"
     android:background="#cb202d">
 
-    <ImageView android:id="@+id/splashscreen" android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:src="@drawable/splash_logo"
+    <ImageView android:id="@+id/splashscreen"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:src="@drawable/food_appetency_logo"
         android:layout_gravity="center"
-        android:layout_marginTop="70dp"/>
+        android:layout_marginTop="150dp"/>
 
 </LinearLayout>

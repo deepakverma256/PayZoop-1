@@ -61,7 +61,7 @@ public class DishModel {
     public void setDescription(String description) {
         this.description = description;
     }
-    Integer quantity = 1;
+    Integer quantity = 0;
 
     public Integer getQuantity() {
         return quantity;
@@ -77,7 +77,17 @@ public class DishModel {
     String imageUrl;
     String description;
 
-    public static DishModel getDummyDish(){
+    public String getDietType() {
+        return dietType;
+    }
+
+    public void setDietType(String dietType) {
+        this.dietType = dietType;
+    }
+
+    String dietType;
+
+    public static DishModel getDummyDish1(){
         DishModel dish = new DishModel();
         dish.setName("Biryani");
         dish.setId("BK1");
@@ -86,6 +96,46 @@ public class DishModel {
         dish.setImageUrl("http://www.tasty-indian-recipes.com/wp-content/uploads/2012/06/Paneer-Biryani.jpg");
         dish.setIngredient("Rice, Paneer");
         dish.setPreparationTime(15);
+        dish.setDietType("V");
+        return dish;
+    }
+
+    public static DishModel getDummyDish2(){
+        DishModel dish = new DishModel();
+        dish.setName("Alloo Biryani");
+        dish.setId("BK2");
+        dish.setPrice(45.3);
+        dish.setDescription("Rice ke sath khao paneer.");
+        dish.setImageUrl("http://simpleindianrecipes.com/portals/0/sirimages/Biryani-M.JPG");
+        dish.setIngredient("Rice, Paneer");
+        dish.setPreparationTime(15);
+        dish.setDietType("NV");
+        return dish;
+    }
+
+    public static DishModel getDummyDish3(){
+        DishModel dish = new DishModel();
+        dish.setName("Biryani");
+        dish.setId("BK3");
+        dish.setPrice(45.3);
+        dish.setDescription("Rice ke sath khao paneer.");
+        dish.setImageUrl("http://www.tasty-indian-recipes.com/wp-content/uploads/2012/06/Paneer-Biryani.jpg");
+        dish.setIngredient("Rice, Paneer");
+        dish.setPreparationTime(15);
+        dish.setDietType("V");
+        return dish;
+    }
+
+    public static DishModel getDummyDish4(){
+        DishModel dish = new DishModel();
+        dish.setName("Biryani");
+        dish.setId("BK4");
+        dish.setPrice(45.3);
+        dish.setDescription("Rice ke sath khao paneer.");
+        dish.setImageUrl("http://www.tasty-indian-recipes.com/wp-content/uploads/2012/06/Paneer-Biryani.jpg");
+        dish.setIngredient("Rice, Paneer");
+        dish.setPreparationTime(15);
+        dish.setDietType("NV");
         return dish;
     }
 }

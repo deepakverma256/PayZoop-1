@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -101,25 +102,56 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
     }
 
     @Override
-    public void onBindViewHolder(final ProductRecyclerAdapter.Holder holder, int position) {
+    public void onBindViewHolder(final ProductRecyclerAdapter.Holder holder,final int position) {
             holder.prodNameTv.setText(mProducts.get(position).getName());
+            holder.prodDescTv.setText(mProducts.get(position).getDescription());
             holder.prodPriceTv.setText(getCurrency().getSymbol() + mProducts.get(position).getPrice());
             String imageURL = mProducts.get(position).getImageUrl();
-            Picasso.with(mContext).load(mProducts.get(position).getImageUrl()).placeholder(R.mipmap.ic_launcher).into(holder.prodImgView);
+
+            if(mProducts.get(position).getDietType().equals("NV")) {
+                Picasso.with(mContext).load(R.drawable.non_veg_symbol).placeholder(R.mipmap.ic_launcher).into(holder.prodImgView);
+            }else{
+                Picasso.with(mContext).load(R.drawable.veg_symbol).placeholder(R.mipmap.ic_launcher).into(holder.prodImgView);
+            }
+
+            //Picasso.with(mContext).load(mProducts.get(position).getImageUrl()).placeholder(R.mipmap.ic_launcher).into(holder.prodImgView);
 
             holder.elegantNumberButton.setProduct(mProducts.get(position));
+            if(mProducts.get(position).getQuantity() != 0){
+                holder.elegantNumberButton.setNumber(mProducts.get(position).getQuantity().toString(),true);
+                holder.elegantNumberButton.setVisibility(View.VISIBLE);
+                holder.addButton.setVisibility(View.GONE);
+            }
             holder.elegantNumberButton.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
                 Log.d(TAG, String.format("oldValue: %d   newValue: %d", oldValue, newValue));
                 if(oldValue<newValue){
+                    mProducts.get(position).setQuantity( mProducts.get(position).getQuantity()+1);
                     cart.increamentCartCountForProduct(holder.elegantNumberButton.getProduct());
                 }else{
+                    if(holder.elegantNumberButton.getNumber().equals("0")){
+                       holder.elegantNumberButton.setVisibility(View.GONE);
+                        holder.addButton.setVisibility(View.VISIBLE);
+                    }
+                    mProducts.get(position).setQuantity( mProducts.get(position).getQuantity()-1);
                     cart.decreamentCartCountForProduct(holder.elegantNumberButton.getProduct());
+
                 }
             }
         });
         holder.elegantNumberButton.setNumber(mProducts.get(position).getQuantity());
+
+        holder.addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.addButton.setVisibility(View.GONE);
+                holder.elegantNumberButton.setNumber("1");
+                holder.elegantNumberButton.setVisibility(View.VISIBLE);
+                mProducts.get(position).setQuantity( mProducts.get(position).getQuantity()+1);
+                cart.increamentCartCountForProduct(holder.elegantNumberButton.getProduct());
+            }
+        });
     }
 
     @Override
@@ -133,20 +165,24 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
 
         LinearLayout prodListView;
         TextView  prodNameTv;
+        TextView  prodDescTv;
         TextView  prodPriceTv;
         ImageView prodImgView;
         ProgressBar progressBar;
+        Button addButton;
         ElegantNumberButton elegantNumberButton;
 
         public Holder(View itemView) {
             super(itemView);
             prodListView = (LinearLayout) itemView.findViewById(R.id.product_list_item);
             prodNameTv = (TextView) itemView.findViewById(R.id.grid_text);
+            prodDescTv = (TextView) itemView.findViewById(R.id.description);
             prodPriceTv = (TextView) itemView.findViewById(R.id.grid_text_price);
             prodImgView = (ImageView) itemView.findViewById(R.id.grid_image);
             progressBar = (ProgressBar) itemView.findViewById(R.id.product_scroll_progress);
+            addButton = (Button) itemView.findViewById(R.id.add_btn);
             elegantNumberButton = (ElegantNumberButton) itemView.findViewById(R.id.number_button);
-            elegantNumberButton.setRange(1,5);
+            elegantNumberButton.setRange(0,5);
             itemView.setOnClickListener(this);
         }
 

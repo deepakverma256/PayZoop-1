@@ -28,13 +28,58 @@ public class SubMenuModel {
     }
 
 
-    public static SubMenuModel getDummySubMenu(){
+    public static SubMenuModel getDummySubMenu1(){
         SubMenuModel submenu = new SubMenuModel();
         submenu.setDishes(new ArrayList<DishModel>());
         submenu.setName("SUBCATEGORY");
-        submenu.getDishes().add(DishModel.getDummyDish());
-        submenu.getDishes().add(DishModel.getDummyDish());
-        submenu.getDishes().add(DishModel.getDummyDish());
+        DishModel dish1 = DishModel.getDummyDish1();
+        dish1.setId("ABK1");
+        submenu.getDishes().add(dish1);
+        DishModel dish2 = DishModel.getDummyDish2();
+        dish2.setId("ABK2");
+        submenu.getDishes().add(dish2);
+        DishModel dish3 = DishModel.getDummyDish3();
+        dish3.setId("ABK3");
+        submenu.getDishes().add(dish3);
+        DishModel dish4 = DishModel.getDummyDish4();
+        dish4.setId("ABK4");
+        submenu.getDishes().add(dish4);
+        return submenu;
+    }
+    public static SubMenuModel getDummySubMenu2(){
+        SubMenuModel submenu = new SubMenuModel();
+        submenu.setDishes(new ArrayList<DishModel>());
+        submenu.setName("SUBCATEGORY");
+        DishModel dish1 = DishModel.getDummyDish1();
+        dish1.setId("BBK1");
+        submenu.getDishes().add(dish1);
+        DishModel dish2 = DishModel.getDummyDish2();
+        dish2.setId("BBK2");
+        submenu.getDishes().add(dish2);
+        DishModel dish3 = DishModel.getDummyDish3();
+        dish3.setId("BBK3");
+        submenu.getDishes().add(dish3);
+        DishModel dish4 = DishModel.getDummyDish4();
+        dish4.setId("BBK4");
+        submenu.getDishes().add(dish4);
+        return submenu;
+    }
+    public static SubMenuModel getDummySubMenu3(){
+        SubMenuModel submenu = new SubMenuModel();
+        submenu.setDishes(new ArrayList<DishModel>());
+        submenu.setName("SUBCATEGORY");
+        DishModel dish1 = DishModel.getDummyDish1();
+        dish1.setId("CBK1");
+        submenu.getDishes().add(dish1);
+        DishModel dish2 = DishModel.getDummyDish2();
+        dish2.setId("CBK2");
+        submenu.getDishes().add(dish2);
+        DishModel dish3 = DishModel.getDummyDish3();
+        dish3.setId("CBK3");
+        submenu.getDishes().add(dish3);
+        DishModel dish4 = DishModel.getDummyDish4();
+        dish4.setId("CBK4");
+        submenu.getDishes().add(dish4);
         return submenu;
     }
 }

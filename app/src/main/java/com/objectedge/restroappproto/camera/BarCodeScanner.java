@@ -6,7 +6,7 @@ package com.objectedge.restroappproto.camera;
 public class BarCodeScanner {
 
     /**
-     * event handler for scan button
+     * event handler for scan left_button
      * @param view view of the activity
      */
    /* public void scanNow(View view, ProductListingActivity pla){

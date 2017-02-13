@@ -9,7 +9,7 @@
         android:layout_weight="1"
         android:layout_width="0dp"
         android:text="-"
-        android:background="@android:color/transparent"
+        android:background="@drawable/left_button"
         android:layout_height="match_parent" />
 
     <TextView
@@ -18,14 +18,14 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_width="0dp"
-        android:background="@android:color/transparent"
+        android:background="@color/colorSecondary"
         android:layout_height="match_parent" />
     <Button
         android:id="@+id/add_btn"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:text="+"
-        android:background="@android:color/transparent"
+        android:background="@drawable/right_button"
         android:layout_height="match_parent" />
 
 </LinearLayout>

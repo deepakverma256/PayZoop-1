@@ -92,6 +92,7 @@ public class ElegantNumberButton extends RelativeLayout {
         float textSize = a.getDimension(R.styleable.ElegantNumberButton_textSize,13);
         int color = a.getColor(R.styleable.ElegantNumberButton_backGroundColor,defaultColor);
         int textColor = a.getColor(R.styleable.ElegantNumberButton_textColor,defaultTextColor);
+        int buttonTextColor = a.getColor(R.styleable.ElegantNumberButton_controlerTextColor,defaultTextColor);
         Drawable drawable = a.getDrawable(R.styleable.ElegantNumberButton_backgroundDrawable);
 
         Button button1 = (Button) findViewById(R.id.subtract_btn);
@@ -99,8 +100,8 @@ public class ElegantNumberButton extends RelativeLayout {
         textView = (TextView) findViewById(R.id.number_counter);
         LinearLayout mLayout = (LinearLayout) findViewById(R.id.layout);
 
-        button1.setTextColor(textColor);
-        button2.setTextColor(textColor);
+        button1.setTextColor(buttonTextColor);
+        button2.setTextColor(buttonTextColor);
         textView.setTextColor(textColor);
         button1.setTextSize(textSize);
         button2.setTextSize(textSize);

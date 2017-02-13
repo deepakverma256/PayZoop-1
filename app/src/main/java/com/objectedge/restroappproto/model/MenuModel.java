@@ -21,9 +21,9 @@ public class MenuModel {
     public static MenuModel getDummyMenu(){
         MenuModel menu = new MenuModel();
         menu.setSubMenus(new ArrayList<SubMenuModel>());
-        menu.getSubMenus().add(SubMenuModel.getDummySubMenu());
-        menu.getSubMenus().add(SubMenuModel.getDummySubMenu());
-        menu.getSubMenus().add(SubMenuModel.getDummySubMenu());
+        menu.getSubMenus().add(SubMenuModel.getDummySubMenu1());
+        menu.getSubMenus().add(SubMenuModel.getDummySubMenu2());
+        menu.getSubMenus().add(SubMenuModel.getDummySubMenu3());
         return menu;
     }
 }
